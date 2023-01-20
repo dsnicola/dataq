@@ -1,0 +1,56 @@
+{
+  "groups": [
+    {
+      "name": "Uniqueness",
+      "description": "All the checks to verify field uniqueness",
+      "severity": "ERROR",
+      "checks": [
+        {
+          "columns": [
+            "form_id"
+          ],
+          "check_type": "isUnique"
+        }
+      ]
+    },
+    {
+      "name": "Completeness",
+      "description": "All the checks to verify field completeness",
+      "severity": "WARNING",
+      "checks": [
+        {
+          "columns": [
+            "form_id",
+            "is_report_uploaded"
+          ],
+          "check_type": "isComplete"
+        }
+      ]
+    },
+    {
+      "name": "Checks with comparison",
+      "description": "blab la",
+      "severity": "INFO",
+      "checks": [
+        {
+          "columns": [
+            "phone_number"
+          ],
+          "check_type": "hasCompleteness",
+          "operator": ">=",
+          "value": "0.56"
+        },
+        {
+          "columns": [
+            "phone_number"
+          ],
+          "check_type": "isContainedIn",
+          "value_list": [
+            "3334455666",
+            "3400000000"
+          ]
+        }
+      ]
+    }
+  ]
+}
