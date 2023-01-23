@@ -5,5 +5,5 @@ import org.apache.spark.sql.DataFrame
 
 trait FailureHandlerStrategy {
 
-  def handle(dataFrame: DataFrame): QualityOutput
+  def handle(checkResults: DataFrame): QualityOutput
 }
