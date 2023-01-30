@@ -26,7 +26,7 @@ object DQApp extends SparkContext {
   @Option(name = "--dataframeLocation", aliases = Array("-d"), usage = "location from where to read delta table", required = true)
   var dataframeLocation: String = _
 
-  @Option(name = "--checkLocation", aliases = Array("-C"), usage = "location where to write the output of data quality checks", required = true)
+  @Option(name = "--checkLocation", aliases = Array("-C"), usage = "location where to write the output of data quality checks", required = false)
   var checkLocation: String = _
 
   @Option(name = "--corruptedLocation", aliases = Array("-X"), usage = "location where to write bad data in case of data quality failures", required = false)
@@ -35,7 +35,7 @@ object DQApp extends SparkContext {
   @Option(name = "--analysisLocation", aliases = Array("-A"), usage = "location where to write the output of data analysis", required = false)
   var analysisLocation: String = _
 
-  @Option(name = "--failureStrategy", aliases = Array("-f"), usage = "Strategy to use when bad data has been found by the checks. Default value IGNORE_MALFORMED. Valid values (DROP_MALFORMED, FAIL_FAST)", required = true)
+  @Option(name = "--failureStrategy", aliases = Array("-f"), usage = "Strategy to use when bad data has been found by the checks. Default value IGNORE_MALFORMED. Valid values (DROP_MALFORMED, FAIL_FAST)", required = false)
   var failureStrategy: String = "IGNORE_MALFORMED"
 
   def main(args: Array[String])(implicit spark: SparkSession): Unit = {
@@ -51,15 +51,11 @@ object DQApp extends SparkContext {
     val qualityServiceStrategy = QSStrategyFactory.createStrategy(dqConfig, dqFactory)
     val qualityResult = qualityServiceStrategy.runQuality(target, dqConfig.groups.orNull)
 
-    val failureStrategyHandler = FailureStrategyFactory.createFailureStrategy(failureStrategy, target)
+    val failureStrategyHandler = FailureStrategyFactory.createFailureStrategy(failureStrategy)
     val sink = Sink(checkLocation, corruptedLocation, analysisLocation, CSV)
     val resultsWriter = ResultsWriterFactory.createResultsWriter(failureStrategyHandler, sink)
     resultsWriter.writeAll(qualityResult)
 
-    val checkResult = qualityResult.getCheckResult()
-    if(checkResult != null) checkResult.show(false)
-    val analyzeResult = qualityResult.getAnalyzeResult()
-    if(analyzeResult != null) analyzeResult.show(false)
   }
 
   def parseArguments(args: Array[String]): Unit = {
@@ -68,7 +64,9 @@ object DQApp extends SparkContext {
       parser.parseArgument(args.toList.asJava)
     } catch {
       case e: CmdLineException =>
-        parser.printUsage(System.err);
+        println(e.getMessage)
+        parser.printUsage(System.err)
+        System.exit(1)
     }
   }
 

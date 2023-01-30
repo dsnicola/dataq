@@ -1,0 +1,6 @@
+check_group,check_level,check_status,constraint,constraint_status,constraint_message
+All the checks to verify field uniqueness,Error,Success,"UniquenessConstraint(Uniqueness(List(form_id),None))",Success,
+All the checks to verify field completeness,Warning,Success,"CompletenessConstraint(Completeness(form_id,None))",Success,
+All the checks to verify field completeness,Warning,Success,"CompletenessConstraint(Completeness(is_report_uploaded,None))",Success,
+blab la,Warning,Warning,"CompletenessConstraint(Completeness(phone_number,None))",Success,
+blab la,Warning,Warning,"ComplianceConstraint(Compliance(phone_number contained in 3334455666,3400000000,`phone_number` IS NULL OR `phone_number` IN ('3334455666','3400000000'),None))",Failure,Value: 0.9615384615384616 does not meet the constraint requirement! Following condition should be true: 3334455666 <= phone_number <= 3400000000
