@@ -42,4 +42,42 @@ object TestUtils {
       inputSchema
     )
   }
+
+  def getFailedChecks(spark: SparkSession): DataFrame = {
+    val inputData = Seq(
+      Row("1", "A", "AA", "success"),
+      Row("2", "B", "BB", "success"),
+      Row("3", "C", "CC", "Error"),
+      Row("4", "D", "DD", "success")
+    )
+    val inputSchema = StructType(List(
+      StructField("id", StringType, true),
+      StructField("name", StringType, true),
+      StructField("surname", StringType, true),
+      StructField("check_status", StringType, true)
+    ))
+    spark.createDataFrame(
+      spark.sparkContext.parallelize(inputData),
+      inputSchema
+    )
+  }
+
+  def getSuccessChecks(spark: SparkSession): DataFrame = {
+    val inputData = Seq(
+      Row("1", "A", "AA", "success"),
+      Row("2", "B", "BB", "success"),
+      Row("3", "C", "CC", "success"),
+      Row("4", "D", "DD", "success")
+    )
+    val inputSchema = StructType(List(
+      StructField("id", StringType, true),
+      StructField("name", StringType, true),
+      StructField("surname", StringType, true),
+      StructField("check_status", StringType, true)
+    ))
+    spark.createDataFrame(
+      spark.sparkContext.parallelize(inputData),
+      inputSchema
+    )
+  }
 }
