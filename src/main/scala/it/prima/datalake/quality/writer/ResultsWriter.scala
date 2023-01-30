@@ -7,8 +7,8 @@ import org.apache.spark.sql.DataFrame
 abstract class ResultsWriter(failureHandler: FailureHandlerStrategy, sink: Sink) {
 
   def writeAll(qualityResult: QualityResult): Unit = {
-    writeChecks(qualityResult.getCheckResult())
-    writeAnalysis(qualityResult.getAnalyzeResult())
+    writeChecks(qualityResult.getCheckResult)
+    writeAnalysis(qualityResult.getAnalyzeResult)
   }
 
   def writeChecks(dataFrame: DataFrame): Unit = {

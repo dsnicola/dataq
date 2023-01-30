@@ -29,9 +29,6 @@ object DQApp extends SparkContext {
   @Option(name = "--checkLocation", aliases = Array("-C"), usage = "location where to write the output of data quality checks", required = false)
   var checkLocation: String = _
 
-  @Option(name = "--corruptedLocation", aliases = Array("-X"), usage = "location where to write bad data in case of data quality failures", required = false)
-  var corruptedLocation: String = _
-
   @Option(name = "--analysisLocation", aliases = Array("-A"), usage = "location where to write the output of data analysis", required = false)
   var analysisLocation: String = _
 
@@ -52,7 +49,7 @@ object DQApp extends SparkContext {
     val qualityResult = qualityServiceStrategy.runQuality(target, dqConfig.groups.orNull)
 
     val failureStrategyHandler = FailureStrategyFactory.createFailureStrategy(failureStrategy)
-    val sink = Sink(checkLocation, corruptedLocation, analysisLocation, CSV)
+    val sink = Sink(checkLocation, analysisLocation, CSV)
     val resultsWriter = ResultsWriterFactory.createResultsWriter(failureStrategyHandler, sink)
     resultsWriter.writeAll(qualityResult)
 
