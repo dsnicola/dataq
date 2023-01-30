@@ -13,14 +13,14 @@ class DQAppTest extends AnyFunSuite with BeforeAndAfter {
   private implicit val spark: SparkSession = SparkSession.builder().master("local[*]").getOrCreate()
   spark.sparkContext.setLogLevel("ERROR")
 
-  before {
+  after {
     FileUtils.deleteDirectory(new File(s"$RESOURCES_PATH/output/actual/checks"))
     FileUtils.deleteDirectory(new File(s"$RESOURCES_PATH/output/actual/analysis"))
   }
 
-  test("system test") {
-    val deltaLocation = s"$RESOURCES_PATH/gold_table"
-    val configLocation = s"$RESOURCES_PATH/config.yaml"
+  test("system test checks") {
+    val deltaLocation = s"$RESOURCES_PATH/sample"
+    val configLocation = s"$RESOURCES_PATH/sample_check_config.yaml"
     val checkLocation = s"$RESOURCES_PATH/output/actual/checks"
     val args = Array(
       "--configurationPath", configLocation,
@@ -38,7 +38,7 @@ class DQAppTest extends AnyFunSuite with BeforeAndAfter {
   }
 
   test("system test analyze") {
-    val deltaLocation = s"$RESOURCES_PATH/gold_table"
+    val deltaLocation = s"$RESOURCES_PATH/sample"
     val configLocation = s"$RESOURCES_PATH/analyze_config.yaml"
     val analysisLocation = s"$RESOURCES_PATH/output/actual/analysis"
     val args = Array(
@@ -53,19 +53,21 @@ class DQAppTest extends AnyFunSuite with BeforeAndAfter {
     val expectedLocation = s"$RESOURCES_PATH/output/expected/analysis.csv"
     val expected = spark.read.option("header", "true").csv(expectedLocation)
 
+    actual.show(false)
+
     assert(actual.collectAsList() === expected.collectAsList())
   }
 
   test("system test complete") {
-    val deltaLocation = s"$RESOURCES_PATH/gold_table"
-    val configLocation = s"$RESOURCES_PATH/complete_config.yaml"
+    val deltaLocation = s"$RESOURCES_PATH/sample"
+    val configLocation = s"$RESOURCES_PATH/sample_complete_config.yaml"
     val checkLocation = s"$RESOURCES_PATH/output/actual/checks"
     val analysisLocation = s"$RESOURCES_PATH/output/actual/analysis"
     val args = Array(
       "--configurationPath", configLocation,
       "--dataframeLocation", deltaLocation,
-    "--checkLocation", checkLocation,
-    "--analysisLocation", analysisLocation
+      "--checkLocation", checkLocation,
+      "--analysisLocation", analysisLocation
 
     )
 

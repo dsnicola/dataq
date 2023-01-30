@@ -1,0 +1,24 @@
+analyze: true
+groups:
+  - name: "High priority"
+    description: "High priority checks"
+    severity: "Error"
+    checks:
+      - columns:
+          - "id"
+          - "name"
+          - "surname"
+        check_type: "isComplete"
+      - columns:
+          - "id"
+          - "age"
+        check_type: "isNonNegative"
+  - name: "Medium priority"
+    description: "Medium priority checks"
+    severity: "Warning"
+    checks:
+      - columns:
+          - "age"
+        check_type: "hasCompleteness"
+        operator: ">="
+        value: "0.80"
