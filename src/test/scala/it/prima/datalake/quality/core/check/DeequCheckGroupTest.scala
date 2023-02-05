@@ -43,13 +43,13 @@ class DeequCheckGroupTest extends AnyFunSuite {
   }
 
   // test all available checks
-  val deequChecks = Map[DQConstraint, Check](
+  val deequChecks: Map[DQConstraint, Check] = Map[DQConstraint, Check](
     DQConstraint(List("c1"), "isUnique") -> Check(CheckLevel.Warning, "descr").isUnique("c1"),
     DQConstraint(List("c1"), "isComplete") -> Check(CheckLevel.Warning, "descr").isComplete("c1"),
     DQConstraint(List("c1"), "hasCompleteness", Some(">="), Some("0.5")) -> Check(CheckLevel.Warning, "descr").hasCompleteness("c1", _ >= 0.5, Some("c1 should be above 0.5")),
     DQConstraint(List("c1"), "isContainedIn", value_list = Some(List("0", "1"))) -> Check(CheckLevel.Warning, "descr").isContainedIn("c1", Array("0", "1"), Some(s"Following condition should be true: 0 <= c1 <= 1")),
-    DQConstraint(List("c1"), "isNonNegative") -> Check(CheckLevel.Warning, "descr").isNonNegative("c1")
-
+    DQConstraint(List("c1"), "isNonNegative") -> Check(CheckLevel.Warning, "descr").isNonNegative("c1"),
+    DQConstraint(List("c1"), "hasUniqueness", Some(">="), Some("0.5")) -> Check(CheckLevel.Warning, "descr").hasUniqueness("c1", _ >= 0.5, Some("c1 should be above 0.5")),
   )
   deequChecks.foreach(
     c =>

@@ -1,6 +1,5 @@
 package it.prima.datalake.quality.writer.failure
 
-import it.prima.datalake.quality.model.QualityOutput
 import it.prima.datalake.quality.utils.TestUtils
 import it.prima.datalake.quality.writer.failure.exceptions.BadDatasetError
 import org.apache.spark.sql.SparkSession
@@ -22,8 +21,8 @@ class FailFastStrategyTest extends AnyFunSuite {
     val checks = TestUtils.getSuccessChecks(spark)
 
     val actual = new FailFastStrategy().handle(checks)
-    val expected = QualityOutput(checks)
+    val expected = checks
 
-    assert(actual === expected)
+    assert(actual.collectAsList() === expected.collectAsList())
   }
 }

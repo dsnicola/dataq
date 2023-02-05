@@ -1,6 +1,5 @@
 package it.prima.datalake.quality.writer.failure
 
-import it.prima.datalake.quality.model.QualityOutput
 import it.prima.datalake.quality.utils.TestUtils
 import org.apache.spark.sql.SparkSession
 import org.scalatest.funsuite.AnyFunSuite
@@ -15,8 +14,8 @@ class IgnoreMalformedStrategyTest extends AnyFunSuite {
 
     val dataFrame = TestUtils.getSampleDataFrame(spark)
     val actual = failureHandlerStrategy.handle(dataFrame)
-    val expected = QualityOutput(dataFrame)
+    val expected = dataFrame
 
-    assert(actual === expected)
+    assert(actual.collectAsList() === expected.collectAsList())
   }
 }

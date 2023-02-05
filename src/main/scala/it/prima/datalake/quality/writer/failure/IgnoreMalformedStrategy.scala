@@ -1,9 +1,8 @@
 package it.prima.datalake.quality.writer.failure
-import it.prima.datalake.quality.model.QualityOutput
 import org.apache.spark.sql.DataFrame
 
 class IgnoreMalformedStrategy extends FailureHandlerStrategy {
-  def handle(checkResults: DataFrame): QualityOutput = {
-    QualityOutput(checkResults)
+  def handle(checkResults: DataFrame): DataFrame = {
+    checkResults
   }
 }

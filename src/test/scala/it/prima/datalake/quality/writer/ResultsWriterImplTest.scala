@@ -1,7 +1,7 @@
 package it.prima.datalake.quality.writer
 
 import it.prima.datalake.quality.constants.CSV
-import it.prima.datalake.quality.model.{QualityOutput, QualityResult, Sink}
+import it.prima.datalake.quality.model.{QualityResult, Sink}
 import it.prima.datalake.quality.utils.TestUtils
 import it.prima.datalake.quality.writer.failure.FailureHandlerStrategy
 import org.apache.commons.io.FileUtils
@@ -28,7 +28,7 @@ class ResultsWriterImplTest extends AnyFunSuite with MockFactory with BeforeAndA
 
   test("write checks") {
     val dataFrame = TestUtils.getSampleDataFrameAllString(spark)
-    (failureHandler.handle _).expects(dataFrame).returns(QualityOutput(dataFrame))
+    (failureHandler.handle _).expects(dataFrame).returns(dataFrame)
 
     resultsWriter.writeChecks(dataFrame)
 
@@ -49,7 +49,7 @@ class ResultsWriterImplTest extends AnyFunSuite with MockFactory with BeforeAndA
   test("write all") {
     val dataFrame = TestUtils.getSampleDataFrameAllString(spark)
     val qualityResult = QualityResult(Some(dataFrame))
-    (failureHandler.handle _).expects(dataFrame).returns(QualityOutput(dataFrame))
+    (failureHandler.handle _).expects(dataFrame).returns(dataFrame)
 
     resultsWriter.writeAll(qualityResult)
 

@@ -23,8 +23,9 @@ class DeequCheckGroup(dqGroup: DQGroup) extends CheckGroup {
       case "isUnique" => dqConstraint.columns.foreach(c => check = check.isUnique(c))
       case "isComplete" => dqConstraint.columns.foreach(c => check = check.isComplete(c))
       case "isNonNegative" => dqConstraint.columns.foreach(c => check = check.isNonNegative(c))
-      case "hasCompleteness" => dqConstraint.columns.foreach(c => check = check.hasCompleteness(c, getComparisonFunction(dqConstraint.operator.get, dqConstraint.value.get.toDouble), Some(s"$c should be above ${dqConstraint.value.get.toDouble}")))
+      case "hasCompleteness" => dqConstraint.columns.foreach(c => check = check.hasCompleteness(c, getComparisonFunction(dqConstraint.operator.get, dqConstraint.value.get.toDouble), Some(s"Completeness of $c should be above ${dqConstraint.value.get.toDouble}")))
       case "isContainedIn" => dqConstraint.columns.foreach(c => check = check.isContainedIn(c, dqConstraint.value_list.get.toArray, Some(s"Following condition should be true: ${dqConstraint.value_list.get.head} <= $c <= ${dqConstraint.value_list.get.last}")))
+      case "hasUniqueness" => dqConstraint.columns.foreach(c => check = check.hasUniqueness(c, getComparisonFunction(dqConstraint.operator.get, dqConstraint.value.get.toDouble), Some(s"Uniqueness of $c should be above ${dqConstraint.value.get.toDouble}")))
     }
   }
 

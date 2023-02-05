@@ -12,8 +12,8 @@ abstract class ResultsWriter(failureHandler: FailureHandlerStrategy, sink: Sink)
   }
 
   def writeChecks(dataFrame: DataFrame): Unit = {
-    val qualityOutput = failureHandler.handle(dataFrame)
-    write(qualityOutput.checkResults, sink.checkPath)
+    val checkResults = failureHandler.handle(dataFrame)
+    write(checkResults, sink.checkPath)
   }
 
   def writeAnalysis(dataFrame: DataFrame): Unit = {
